@@ -1,0 +1,839 @@
+.retroAppContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 40px);
+  padding: 20px;
+  position: relative;
+  background-color: #121212;
+  background-image: linear-gradient(to bottom, #1a1a1a, #0a0a0a);
+}
+
+.tvApp {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.tvContent {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding: 20px;
+  max-height: 60vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+}
+
+.navigationBar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 5px 0;
+  gap: 10px;
+  z-index: 50;
+}
+
+.navButton {
+  background: rgba(50, 50, 50, 0.6);
+  border: none;
+  padding: 5px 10px;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 12px;
+  font-family: 'Courier New', monospace;
+  text-transform: uppercase;
+  min-width: 70px;
+  transition: all 0.2s ease;
+}
+
+.navButton:hover {
+  background: rgba(255, 51, 51, 0.4);
+}
+
+.navButton.active {
+  background: rgba(255, 51, 51, 0.6);
+}
+
+.tvContent::-webkit-scrollbar {
+  width: 8px;
+}
+
+.tvContent::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.tvContent::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.3);
+  border-radius: 10px;
+}
+
+.tvOff {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tvOffText {
+  font-family: 'Courier New', monospace;
+  font-size: 3rem;
+  color: rgba(255, 255, 255, 0.1);
+  text-transform: uppercase;
+  letter-spacing: 5px;
+}
+
+.remotePowerContainer {
+  margin-top: 30px;
+  display: flex;
+  justify-content: center;
+}
+
+.remotePower {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: linear-gradient(145deg, #333, #222);
+  border: 3px solid #111;
+  box-shadow: 
+    0 5px 15px rgba(0, 0, 0, 0.5),
+    inset 0 2px 2px rgba(255, 255, 255, 0.1);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.remotePower:active {
+  transform: scale(0.95);
+  box-shadow: 
+    0 2px 5px rgba(0, 0, 0, 0.5),
+    inset 0 1px 1px rgba(255, 255, 255, 0.1);
+}
+
+.remotePower.on {
+  border-color: #ff333377;
+  box-shadow: 
+    0 5px 15px rgba(255, 51, 51, 0.3),
+    inset 0 2px 2px rgba(255, 255, 255, 0.1);
+}
+
+.powerIcon {
+  color: #ff3333;
+  font-size: 1.5rem;
+  opacity: 0.8;
+}
+
+.contactContent {
+  text-align: center;
+  padding: 30px;
+  color: white;
+  font-family: 'Courier New', monospace;
+}
+
+.contactContent h2 {
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+  letter-spacing: 2px;
+}
+
+.contactContent p {
+  font-size: 1rem;
+  margin-bottom: 15px;
+}
+
+.contactInfo {
+  margin-top: 30px;
+  padding: 15px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 5px;
+  background-color: rgba(255, 255, 255, 0.05);
+  display: inline-block;
+}
+
+/* Custom styles for the application components */
+.tvContent :global(input),
+.tvContent :global(textarea),
+.tvContent :global(button) {
+  font-family: 'Courier New', monospace !important;
+  border-radius: 0 !important;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  background-color: rgba(0, 0, 0, 0.3) !important;
+  color: white !important;
+}
+
+.tvContent :global(button) {
+  background-color: rgba(255, 51, 51, 0.6) !important;
+  text-transform: uppercase !important;
+  letter-spacing: 1px !important;
+  font-weight: bold !important;
+}
+
+.tvContent :global(img) {
+  border: 2px solid rgba(255, 255, 255, 0.3) !important;
+}
+
+/* Sliders for the app */
+.tvContent :global(input[type="range"]) {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.2);
+  outline: none;
+  border: none !important;
+}
+
+.tvContent :global(input[type="range"]::-webkit-slider-thumb) {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 15px;
+  height: 15px;
+  background: #ff3333;
+  cursor: pointer;
+  border-radius: 50%;
+}
+
+/* TV Remote styles */
+.remoteToggle {
+  position: fixed;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 100;
+  background: rgba(50, 50, 50, 0.8);
+  border: none;
+  width: 40px;
+  height: 80px;
+  border-radius: 10px 0 0 10px;
+  cursor: pointer;
+  box-shadow: -5px 0 15px rgba(0, 0, 0, 0.3);
+  transition: right 0.3s ease;
+  color: white;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.remoteToggle:hover {
+  background: rgba(0, 82, 255, 0.8);
+}
+
+.tvRemote {
+  position: fixed;
+  top: 0;
+  right: -330px;
+  width: 300px;
+  height: 90vh;
+  background-image: linear-gradient(to bottom, #333333, #222222);
+  border-left: 4px solid #111;
+  box-shadow: -5px 0 15px rgba(0, 0, 0, 0.5);
+  transition: right 0.3s ease;
+  padding: 20px 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-y: auto;
+  z-index: 1000;
+  border-radius: 40px 0 0 40px;
+}
+
+.tvRemote.open {
+  right: 0;
+}
+
+/* Zwiększony wyświetlacz pilota */
+.remoteDisplay {
+  width: 90%;
+  height: 220px;
+  margin-bottom: 30px;
+  background-color: #111;
+  border-radius: 10px;
+  border: 3px solid #444;
+  padding: 15px;
+  font-family: 'Digital-7', 'Courier New', monospace;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.7);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.remoteDisplay::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0) 40%);
+  pointer-events: none;
+}
+
+.remoteDisplayText, .remoteDisplayChannel {
+  text-align: center;
+  color: #22ff88;
+  text-shadow: 0 0 8px rgba(0, 255, 100, 0.7);
+  font-size: 13px;
+  letter-spacing: 1px;
+  margin: 6px 0;
+}
+
+.remoteDisplayChannel {
+  text-align: center;
+  color: #22ff88;
+  text-shadow: 0 0 8px rgba(0, 255, 100, 0.7);
+  font-size: 16px;
+  margin: 5px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.hackScreen {
+  padding: 12px 8px;
+  margin-top: 8px;
+  border: 2px solid #22ff88;
+  text-align: center;
+  color: #ff2244;
+  text-shadow: 0 0 8px rgba(255, 0, 0, 0.7);
+  font-size: 16px;
+  letter-spacing: 1px;
+  width: 90%;
+  margin: 5px auto;
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0.7; }
+}
+
+.secretCode {
+  color: #ffaa22;
+  font-size: 16px;
+  text-shadow: 0 0 8px rgba(255, 170, 0, 0.8);
+}
+
+.remoteDisplayIcon {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  position: absolute;
+  right: 10px;
+  top: 25%;
+  transform: translateY(-50%);
+  border: 2px solid rgba(255, 255, 255, 0.4);
+}
+
+/* Sekcja z przyciskami zasilania */
+.remotePowerSection {
+  display: flex;
+  justify-content: space-between;
+  width: 90%;
+  margin-bottom: 20px;
+}
+
+.remotePowerButton, .remoteMuteButton {
+  width: 45%;
+  height: 35px;
+  border-radius: 8px;
+  border: none;
+  font-weight: bold;
+  font-size: 13px;
+  cursor: pointer;
+  box-shadow: 0 3px 0 rgba(0, 0, 0, 0.2);
+  transition: all 0.1s;
+}
+
+.remotePowerButton {
+  background-color: #e74c3c;
+  color: white;
+}
+
+.remoteMuteButton {
+  background-color: #3498db;
+  color: white;
+}
+
+.remotePowerButton:active, .remoteMuteButton:active {
+  transform: translateY(4px);
+  box-shadow: 0 0 0 rgba(0, 0, 0, 0.2);
+}
+
+/* Kolorowe przyciski */
+.remoteColorButtons {
+  display: flex;
+  justify-content: space-between;
+  width: 90%;
+  margin-bottom: 20px;
+}
+
+.remoteColorButton {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 3px 0 rgba(0, 0, 0, 0.2);
+  transition: all 0.1s;
+}
+
+.remoteColorButton:active {
+  transform: translateY(4px);
+  box-shadow: 0 0 0 rgba(0, 0, 0, 0.2);
+}
+
+/* Przyciski numeryczne */
+.remoteNumpad {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  width: 90%;
+  margin-bottom: 20px;
+}
+
+.remoteNumButton {
+  height: 35px;
+  border-radius: 50%;
+  background-color: #555;
+  color: white;
+  border: none;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 3px 0 rgba(0, 0, 0, 0.2);
+  transition: all 0.1s;
+}
+
+.remoteNumButton:active {
+  transform: translateY(4px);
+  box-shadow: 0 0 0 rgba(0, 0, 0, 0.2);
+}
+
+/* Przyciski sterujące */
+.remoteControlButtons {
+  width: 90%;
+  margin-bottom: 20px;
+}
+
+.remoteControlRow {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 12px;
+  align-items: center;
+}
+
+.remoteControlArrow {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #7f8c8d;
+  color: white;
+  border: none;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 3px 0 rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.1s;
+}
+
+.remoteMiddleButton {
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  background-color: #2ecc71;
+  color: white;
+  border: none;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 3px 0 rgba(0, 0, 0, 0.2);
+  transition: all 0.1s;
+}
+
+.remoteControlArrow:active, .remoteMiddleButton:active {
+  transform: translateY(4px);
+  box-shadow: 0 0 0 rgba(0, 0, 0, 0.2);
+}
+
+/* Przyciski głośności i kanałów */
+.remoteVolumeButtons, .remoteChannelButtons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+
+.remoteLabel {
+  color: white;
+  font-size: 12px;
+  margin-bottom: 5px;
+}
+
+.remoteButton {
+  width: 50px;
+  height: 40px;
+  border-radius: 8px;
+  background-color: #9b59b6;
+  color: white;
+  border: none;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 4px 0 rgba(0, 0, 0, 0.2);
+  transition: all 0.1s;
+}
+
+.remoteButton:active {
+  transform: translateY(4px);
+  box-shadow: 0 0 0 rgba(0, 0, 0, 0.2);
+}
+
+.remoteFooter {
+  margin-top: auto;
+  width: 100%;
+  text-align: center;
+}
+
+.remoteVersion {
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 12px;
+  margin: 0;
+}
+
+/* Usuń stare style, które nie są już potrzebne */
+.remoteTitle,
+.remoteSectionTitle,
+.remoteSection,
+.themeButton,
+.themeButton.active,
+.powerButton,
+.remoteSlider {
+  display: none;
+}
+
+/* Updated Mobile Styles */
+@media (max-width: 768px) {
+  .retroAppContainer {
+    padding: 10px;
+    min-height: 100vh;
+    justify-content: flex-start;
+  }
+  
+  .tvContent {
+    max-height: none;
+    height: 100%;
+  }
+  
+  .tvRemote {
+    width: 250px;
+    padding: 15px 10px;
+  }
+  
+  .remoteToggle {
+    width: 30px;
+    height: 60px;
+    font-size: 16px;
+  }
+  
+  .remoteDisplay {
+    height: 40px;
+  }
+  
+  .remoteNumpad {
+    gap: 8px;
+  }
+  
+  .remoteNumButton {
+    width: 35px;
+    height: 35px;
+  }
+  
+  .remoteControlArrow {
+    width: 35px;
+    height: 35px;
+  }
+  
+  .remoteMiddleButton {
+    width: 35px;
+    height: 35px;
+  }
+  
+  .navButton, .tvContent :global(button) {
+    font-size: 10px;
+    padding: 3px 6px;
+    min-width: 50px;
+  }
+}
+
+@media (max-width: 480px) {
+  .retroAppContainer {
+    padding: 0;
+    justify-content: space-between;
+    height: 100vh;
+    position: relative;
+  }
+  
+  .tvContainer {
+    transform: none;
+    max-width: 100%;
+    width: 100%;
+    perspective: none;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .tvOuter {
+    transform: none;
+    border-radius: 15px;
+    box-shadow: 
+      0 5px 15px rgba(0, 0, 0, 0.7),
+      0 0 0 5px #333,
+      0 0 0 6px #222;
+    height: 80vh;
+    padding-top: 0;
+  }
+  
+  .tvInner {
+    position: absolute;
+    top: 2%;
+    left: 2%;
+    right: 2%;
+    bottom: 5%;
+  }
+  
+  .tvScreen {
+    border-width: 6px;
+    border-radius: 10px;
+  }
+  
+  .tvContent {
+    border-width: 0;
+  }
+  
+  .tvBottom {
+    height: 40px;
+  }
+  
+  .tvControls {
+    gap: 15px;
+  }
+  
+  .tvPowerButton,
+  .tvChannel,
+  .tvVolume {
+    width: 15px;
+    height: 15px;
+  }
+  
+  /* Dostosowanie pilota dla urządzeń mobilnych */
+  .tvRemote {
+    width: 280px;
+    max-width: 85%;
+    height: 100vh;
+    right: -290px;
+    border-radius: 40px 0 0 40px;
+    padding: 15px 10px;
+    background-image: linear-gradient(to bottom, #333333, #222222);
+    border-left: 4px solid #111;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-y: auto;
+    transition: right 0.3s ease;
+    box-shadow: -5px 0 15px rgba(0, 0, 0, 0.5);
+    z-index: 1001;
+  }
+  
+  .tvRemote.open {
+    right: 0;
+  }
+  
+  .remoteToggle {
+    width: 30px;
+    height: 60px;
+    top: 40%;
+    opacity: 0.8;
+    z-index: 2000;
+    background: rgba(50, 50, 50, 0.8);
+    color: white;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    border-radius: 10px 0 0 10px;
+  }
+  
+  .remoteDisplay {
+    width: 90%;
+    height: 220px;
+    margin-bottom: 35px;
+    background-color: #111;
+    border-radius: 10px;
+    border: 3px solid #444;
+    padding: 15px;
+    font-family: 'Digital-7', 'Courier New', monospace;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.7);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    overflow: hidden;
+  }
+  
+  .remoteDisplayText, .remoteDisplayChannel {
+    text-align: center;
+    color: #22ff88;
+    text-shadow: 0 0 8px rgba(0, 255, 100, 0.7);
+    font-size: 14px;
+    letter-spacing: 1px;
+    margin: 6px 0;
+  }
+  
+  .remotePowerSection {
+    display: flex;
+    justify-content: space-between;
+    width: 90%;
+    margin-bottom: 20px;
+    gap: 15px;
+  }
+  
+  .remotePowerButton, .remoteMuteButton {
+    height: 35px;
+    font-size: 13px;
+  }
+  
+  .remoteColorButtons {
+    display: flex;
+    justify-content: space-around;
+    width: 90%;
+    margin-bottom: 20px;
+  }
+  
+  .remoteColorButton {
+    width: 32px;
+    height: 32px;
+  }
+  
+  .remoteNumpad {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    width: 90%;
+    margin-bottom: 20px;
+  }
+  
+  .remoteNumButton {
+    width: 50px;
+    height: 35px;
+    border-radius: 40px;
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .remoteControlButtons {
+    width: 90%;
+    margin-bottom: 20px;
+  }
+  
+  .remoteControlRow {
+    margin-bottom: 12px;
+  }
+  
+  .remoteControlArrow {
+    width: 40px;
+    height: 40px;
+    font-size: 18px;
+  }
+  
+  .remoteMiddleButton {
+    width: 55px;
+    height: 55px;
+    font-size: 14px;
+  }
+  
+  .remoteFooter {
+    margin-top: 10px;
+    width: 100%;
+    text-align: center;
+    padding-bottom: 10px;
+  }
+  
+  .remoteVersion {
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 12px;
+    margin: 0;
+  }
+  
+  /* Pozostałe style mobilne */
+  .remotePowerContainer {
+    position: absolute;
+    bottom: 10vh;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-top: 0;
+  }
+  
+  .remotePower {
+    width: 60px;
+    height: 60px;
+  }
+  
+  /* Przywrócenie styli dla mobileFooter */
+  .mobileFooter {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background: rgba(30, 30, 30, 0.9);
+    height: 10vh;
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    z-index: 100;
+    padding: 5px;
+    border-top: 2px solid #222;
+  }
+  
+  .mobileFooterButton {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    background: transparent;
+    border: none;
+    font-family: 'Courier New', monospace;
+    font-size: 10px;
+    font-weight: bold;
+    text-transform: uppercase;
+    padding: 5px;
+    width: 18%;
+  }
+  
+  .mobileFooterButton.active {
+    color: #ff3333;
+  }
+  
+  .mobileFooterIcon {
+    font-size: 16px;
+    margin-bottom: 2px;
+  }
+} 

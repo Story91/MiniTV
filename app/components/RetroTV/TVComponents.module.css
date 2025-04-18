@@ -1,0 +1,511 @@
+.tvComponentContainer {
+  color: white;
+  font-family: 'Courier New', monospace;
+  margin-bottom: 30px;
+}
+
+.tvSectionTitle {
+  text-align: center;
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  letter-spacing: 3px;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+  border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+  padding-bottom: 10px;
+}
+
+.tvSubTitle {
+  font-size: 1rem;
+  margin-bottom: 15px;
+  opacity: 0.8;
+  letter-spacing: 1px;
+}
+
+.tvForm {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.formGroup {
+  margin-bottom: 15px;
+}
+
+.tvLabel {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  opacity: 0.8;
+}
+
+.tvFileInput {
+  display: block;
+  width: 100%;
+  padding: 8px;
+  background-color: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: white;
+  font-family: 'Courier New', monospace;
+  cursor: pointer;
+}
+
+.tvTextInput,
+.tvNumberInput,
+.tvTextarea {
+  width: 100%;
+  padding: 10px;
+  background-color: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: white;
+  font-family: 'Courier New', monospace;
+  resize: vertical;
+}
+
+.tvTextarea {
+  min-height: 80px;
+}
+
+.tvInputNote {
+  font-size: 0.7rem;
+  opacity: 0.6;
+  margin-top: 5px;
+}
+
+.tvButtonGroup {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.tvButton,
+.tvButtonSecondary {
+  padding: 10px 15px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  border: none;
+  cursor: pointer;
+  font-family: 'Courier New', monospace;
+  font-weight: bold;
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.tvButton {
+  background-color: rgba(255, 51, 51, 0.6);
+  color: white;
+}
+
+.tvButton:hover {
+  background-color: rgba(255, 51, 51, 0.8);
+  box-shadow: 0 0 10px rgba(255, 51, 51, 0.5);
+}
+
+.tvButtonSecondary {
+  background-color: rgba(50, 50, 50, 0.6);
+  color: white;
+}
+
+.tvButtonSecondary:hover {
+  background-color: rgba(50, 50, 50, 0.8);
+}
+
+.tvButton.disabled,
+.tvButtonSecondary.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.tvButton::before,
+.tvButtonSecondary::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  transition: all 0.5s;
+}
+
+.tvButton:hover::before,
+.tvButtonSecondary:hover::before {
+  left: 100%;
+}
+
+.generateButton {
+  background-color: rgba(0, 255, 0, 0.4);
+  font-size: 1.1rem;
+  padding: 15px;
+  margin-top: 15px;
+}
+
+.generateButton:hover {
+  background-color: rgba(0, 255, 0, 0.6);
+  box-shadow: 0 0 15px rgba(0, 255, 0, 0.5);
+}
+
+.previewContainer {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.previewImageContainer {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.previewImage {
+  max-width: 100%;
+  max-height: 200px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 5px;
+}
+
+.tvProgress {
+  color: #4caf50;
+  margin-top: 10px;
+  font-size: 0.9rem;
+}
+
+.tvError {
+  color: #ff5252;
+  margin-top: 10px;
+  font-size: 0.9rem;
+}
+
+.tvInfo {
+  text-align: center;
+  opacity: 0.7;
+  font-style: italic;
+  margin: 20px 0;
+}
+
+.tvGridContainer {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+  margin-top: 10px;
+}
+
+.generationStatus {
+  margin-top: 20px;
+}
+
+.progressBar {
+  width: 100%;
+  height: 15px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+
+.progressBarFill {
+  height: 100%;
+  background: linear-gradient(90deg, 
+    rgba(0, 255, 0, 0.6) 0%, 
+    rgba(255, 255, 0, 0.6) 50%, 
+    rgba(255, 0, 0, 0.6) 100%
+  );
+  transition: width 0.3s ease;
+}
+
+.progressText {
+  text-align: center;
+  font-size: 0.8rem;
+  margin-bottom: 15px;
+}
+
+.generationLogs {
+  background-color: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 5px;
+  padding: 10px;
+  max-height: 150px;
+  overflow-y: auto;
+}
+
+.logEntry {
+  font-size: 0.8rem;
+  opacity: 0.8;
+  margin-bottom: 5px;
+  font-family: 'Courier New', monospace;
+}
+
+.videoContainer {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.tvVideo {
+  width: 100%;
+  max-width: 500px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 5px;
+}
+
+.videoControls {
+  margin-top: 20px;
+}
+
+/* Media queries for better mobile responsiveness */
+@media (max-width: 768px) {
+  .tvGridContainer {
+    grid-template-columns: 1fr;
+  }
+  
+  .tvButtonGroup {
+    flex-direction: column;
+  }
+}
+
+/* Dodanie stylów dla wersji mobilnej */
+@media (max-width: 480px) {
+  .tvSectionTitle {
+    font-size: 1.3rem;
+    letter-spacing: 2px;
+    margin-bottom: 15px;
+  }
+  
+  .tvLabel {
+    font-size: 0.55rem !important;
+    margin-bottom: 3px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: block;
+    text-align: center;
+    opacity: 1;
+  }
+  
+  .tvFileInput {
+    font-size: 0.7rem !important;
+    padding: 3px !important;
+    white-space: normal !important;
+    text-overflow: ellipsis !important;
+    overflow: hidden !important;
+  }
+  
+  .tvInputNote {
+    font-size: 0.6rem;
+  }
+  
+  .formGroup {
+    margin-bottom: 8px;
+  }
+  
+  .tvButton, .tvButtonSecondary {
+    padding: 8px 12px;
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+  }
+  
+  .tvSubTitle {
+    font-size: 0.9rem;
+  }
+  
+  .previewImage {
+    max-height: 150px;
+  }
+  
+  .tvTextInput,
+  .tvNumberInput,
+  .tvTextarea {
+    padding: 8px;
+    font-size: 0.8rem;
+  }
+  
+  .tvProgress, .tvError, .tvInfo {
+    font-size: 0.8rem;
+  }
+  
+  /* Zwiększona szerokość przycisku RESET na urządzeniach mobilnych */
+  .tvButtonSecondary {
+    min-width: 70px;
+    margin-top: 5px;
+    background-color: rgba(255,80,80,0.7) !important;
+  }
+  
+  /* Zmniejszenie marginesów na mobilnych urządzeniach */
+  .tvComponentContainer {
+    padding: 10px !important;
+  }
+  
+  .tvSectionTitle {
+    margin-bottom: 15px !important;
+  }
+  
+  .parametersSummary {
+    margin-bottom: 8px;
+    padding: 5px;
+    font-size: 0.75rem;
+  }
+  
+  .parametersSummaryTitle {
+    font-size: 0.85rem;
+    margin-bottom: 3px;
+    padding-bottom: 3px;
+  }
+  
+  .parametersGrid {
+    gap: 3px;
+    padding: 2px;
+  }
+  
+  .parameterItem {
+    padding: 2px 5px;
+    border-radius: 3px;
+    margin-right: 3px;
+    margin-bottom: 2px;
+  }
+  
+  .parameterLabel {
+    font-size: 0.6rem;
+    margin-right: 3px;
+  }
+  
+  .parameterValue {
+    font-size: 0.65rem;
+  }
+  
+  .generateButton {
+    font-size: 1rem !important;
+    padding: 10px !important;
+    margin-top: 10px;
+    width: 100%;
+    max-width: 300px;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+  }
+}
+
+.parametersSummary {
+  margin-bottom: 5px;
+  background-color: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 5px;
+  padding: 8px;
+  font-size: 0.95rem;
+}
+
+.parametersSummaryTitle {
+  font-size: 1.1rem;
+  color: #3498db;
+  margin-bottom: 8px;
+  text-align: center;
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.3);
+  padding-bottom: 5px;
+  text-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
+}
+
+.parametersGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 5px;
+}
+
+.parameterItem {
+  display: flex;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.4);
+  padding: 4px 8px;
+  border-radius: 4px;
+  flex: 0 0 auto;
+  margin-right: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.parameterLabel {
+  font-size: 0.8rem;
+  color: #cccccc;
+  text-transform: uppercase;
+  margin-right: 5px;
+  font-weight: bold;
+}
+
+.parameterValue {
+  font-size: 0.9rem;
+  color: #ffffff;
+  font-weight: bold;
+  word-break: break-word;
+  text-shadow: 0 0 3px rgba(255, 255, 255, 0.3);
+}
+
+/* Style dla komunikatu o sukcesie generowania */
+.generationSuccess {
+  margin-top: 20px;
+  background-color: rgba(0, 128, 0, 0.2);
+  border: 1px solid rgba(0, 255, 0, 0.3);
+  border-radius: 5px;
+  padding: 15px;
+  animation: pulseGlow 2s infinite alternate;
+}
+
+.successMessage {
+  font-size: 1.2rem;
+  text-align: center;
+  color: #00ff00;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+.checkmark {
+  display: inline-block;
+  margin-right: 5px;
+  font-size: 1.3rem;
+}
+
+.watchInstructions {
+  text-align: center;
+  margin-top: 15px;
+}
+
+.watchNotice {
+  margin-top: 5px;
+  font-size: 1.1rem;
+}
+
+.highlight {
+  color: #ffd700;
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+.watchArrow {
+  font-size: 2rem;
+  margin-top: 10px;
+  text-align: center;
+  color: #ffd700;
+  animation: bounceRight 1s infinite;
+}
+
+@keyframes pulseGlow {
+  from {
+    box-shadow: 0 0 5px rgba(0, 255, 0, 0.5);
+  }
+  to {
+    box-shadow: 0 0 15px rgba(0, 255, 0, 0.8);
+  }
+}
+
+@keyframes bounceRight {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(10px);
+  }
+} 
