@@ -62,11 +62,11 @@ const RetroTVApp: React.FC<RetroTVAppProps> = ({
   generateComponent,
   videoComponent,
 }) => {
-  const [activeTab, setActiveTab] = useState<string>('upload');
-  const [isPoweredOn, setIsPoweredOn] = useState<boolean>(true);
-  const [staticIntensity, setStaticIntensity] = useState<number>(0.2);
+  const [activeTab, setActiveTab] = useState<string>('main');
+  const [isPoweredOn, setIsPoweredOn] = useState<boolean>(false);
+  const [staticIntensity, setStaticIntensity] = useState<number>(0.8);
   const [isRemoteOpen, setIsRemoteOpen] = useState<boolean>(false);
-  const [currentTheme, setCurrentTheme] = useState<string>('yellow');
+  const [currentTheme, setCurrentTheme] = useState<string>('blue');
   const [currentChannel, setCurrentChannel] = useState(0);
   const [secretCode, setSecretCode] = useState<number[]>([]);
   const [showHackScreen, setShowHackScreen] = useState(false);
