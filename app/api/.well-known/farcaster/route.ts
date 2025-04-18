@@ -15,7 +15,7 @@ export async function GET() {
       buttonTitle: process.env.NEXT_PUBLIC_BUTTON_TITLE || "MiniTV : AI Video Creator",
       splashImageUrl: process.env.NEXT_PUBLIC_SPLASH_IMAGE_URL || "https://mini-tv.app/miniicon.png",
       splashBackgroundColor: `#${process.env.NEXT_PUBLIC_SPLASH_BACKGROUND_COLOR || "FFFFFF"}`,
-      subtitle: "Transform images into videos with AI",
+      subtitle: "Image to Video AI Creator",
       description: "MiniTV lets you turn static images into dynamic videos using state-of-the-art AI. Built on Ohara by Story91.base.eth",
       primaryCategory: "art-creativity",
       tags: ["ai", "video", "image", "creation", "base"],
