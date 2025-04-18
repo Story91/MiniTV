@@ -620,6 +620,63 @@ export const TVGenerateComponent: React.FC<{
 }) => {
   const isMobile = useIsMobile();
   
+  // Nowy stan do śledzenia statusu zadania
+  const [pollingInterval, setPollingInterval] = useState<NodeJS.Timeout | null>(null);
+  
+  // Funkcja obsługująca inicjowanie generowania wideo asynchronicznie
+  const handleStartVideoGeneration = async () => {
+    try {
+      // Wywołaj pierwotną funkcję dostarczoną przez props
+      handleGenerateVideo();
+      
+      // Zatrzymaj poprzednie intervalsy jeśli istnieją
+      if (pollingInterval) {
+        clearInterval(pollingInterval);
+      }
+    } catch (error) {
+      console.error('Error starting video generation:', error);
+    }
+  };
+  
+  // Efekt do obsługi odpytywania statusu zadania
+  useEffect(() => {
+    // Jeśli mamy taskId i trwa generowanie, ustaw interval do odpytywania statusu
+    if (taskId && isGeneratingVideo) {
+      const interval = setInterval(async () => {
+        try {
+          const response = await fetch(`/api/task-status/${taskId}`);
+          const data = await response.json();
+          
+          // Tutaj możemy aktualizować dane w komponencie nadrzędnym
+          // Uwaga: Komponenty nadrzędne powinny dostarczyć funkcje do aktualizacji stanu
+          
+          // Zakończ odpytywanie, gdy zadanie jest zakończone
+          if (data.status === 'SUCCEEDED' || data.status === 'FAILED') {
+            if (pollingInterval) {
+              clearInterval(pollingInterval);
+              setPollingInterval(null);
+            }
+          }
+        } catch (error) {
+          console.error('Error fetching task status:', error);
+        }
+      }, 5000); // Odpytuj co 5 sekund
+      
+      setPollingInterval(interval);
+      
+      // Zatrzymaj interval przy odmontowaniu lub zmianie taskId
+      return () => {
+        clearInterval(interval);
+      };
+    }
+    
+    // Zatrzymaj odpytywanie, gdy generowanie jest zatrzymane
+    if (!isGeneratingVideo && pollingInterval) {
+      clearInterval(pollingInterval);
+      setPollingInterval(null);
+    }
+  }, [taskId, isGeneratingVideo, pollingInterval]);
+  
   if (!imgbbResponse || !imgbbResponse.success) {
     return (
       <div className={styles.tvComponentContainer}>
@@ -707,7 +764,7 @@ export const TVGenerateComponent: React.FC<{
       
       <div className={styles.tvForm}>
         <button
-          onClick={handleGenerateVideo}
+          onClick={handleStartVideoGeneration}
           disabled={isGeneratingVideo}
           className={`${styles.tvButton} ${styles.generateButton} ${isGeneratingVideo ? styles.disabled : ''}`}
           style={{ marginTop: isMobile ? '8px' : 'inherit', padding: isMobile ? '10px' : 'inherit' }}

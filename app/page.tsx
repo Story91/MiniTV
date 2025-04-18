@@ -230,28 +230,74 @@ export default function HomePage() {
 
       const data = await response.json();
       
-      setGenerationProgress(100);
-      
-      if (data.videoUrl) {
-        setVideoUrl(data.videoUrl);
-        setGenerationLogs(prevLogs => [...prevLogs, 'Video generation completed!']);
-        setGenerationStatus('SUCCEEDED');
-        if (data.taskId) {
-          setTaskId(data.taskId);
+      if (data.taskId) {
+        setTaskId(data.taskId);
+        setGenerationLogs(prevLogs => [...prevLogs, `Task initiated with ID: ${data.taskId}`]);
+        
+        let taskComplete = false;
+        let attempts = 0;
+        const maxAttempts = 60; // 5 minutes max waiting between checks
+        
+        while (!taskComplete && attempts < maxAttempts) {
+          await new Promise(resolve => setTimeout(resolve, 5000));
+          
+          try {
+            const statusResponse = await fetch(`/api/task-status/${data.taskId}`);
+            
+            if (!statusResponse.ok) {
+              setGenerationLogs(prevLogs => [...prevLogs, `Error checking status: ${statusResponse.status}`]);
+              attempts++;
+              continue;
+            }
+            
+            const statusData = await statusResponse.json();
+            console.log('Status data:', statusData);
+            
+            if (statusData.status) {
+              setGenerationStatus(statusData.status);
+            }
+            
+            if (statusData.progress !== undefined) {
+              setGenerationProgress(statusData.progress);
+            }
+            
+            if (statusData.logs && statusData.logs.length > 0) {
+              setGenerationLogs(prevLogs => {
+                const lastLog = prevLogs[prevLogs.length - 1];
+                if (statusData.logs[statusData.logs.length - 1] !== lastLog) {
+                  return [...prevLogs, ...statusData.logs];
+                }
+                return prevLogs;
+              });
+            }
+            
+            if (statusData.status === 'SUCCEEDED') {
+              taskComplete = true;
+              setVideoUrl(statusData.videoUrl || '');
+              setGenerationLogs(prevLogs => [...prevLogs, 'Video generation completed!']);
+              break;
+            } else if (statusData.status === 'FAILED') {
+              taskComplete = true;
+              throw new Error(statusData.error || 'Video generation failed');
+            }
+          } catch (statusError: any) {
+            console.error('Error checking status:', statusError);
+            setGenerationLogs(prevLogs => [...prevLogs, `Error checking status: ${statusError.message || 'Unknown error'}`]);
+          }
+          
+          attempts++;
+        }
+        
+        if (!taskComplete) {
+          throw new Error('Video generation timed out');
         }
       } else {
-        if (data.status) {
-          setGenerationStatus(data.status);
-        }
-        if (data.taskId) {
-          setTaskId(data.taskId);
-        }
-        throw new Error('No video URL in response');
+        throw new Error('No task ID in response');
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error:', error);
       setError('Failed to generate video. Please try again.');
-      setGenerationLogs(prevLogs => [...prevLogs, 'Error: Failed to generate video']);
+      setGenerationLogs(prevLogs => [...prevLogs, `Error: ${error.message || 'Failed to generate video'}`]);
       setGenerationStatus('FAILED');
     } finally {
       setIsGeneratingVideo(false);

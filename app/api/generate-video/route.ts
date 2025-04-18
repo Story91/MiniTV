@@ -76,83 +76,15 @@ export async function POST(request: NextRequest) {
     const imageToVideo = await client.imageToVideo.create(createParams);
 
     console.log('Task created with ID:', imageToVideo.id);
-
-    // Poll for task completion
-    let taskComplete = false;
-    let result = null;
-    let attempts = 0;
-    const maxAttempts = 60; // 2 minutes maximum
-
-    while (!taskComplete && attempts < maxAttempts) {
-      console.log(`Polling attempt ${attempts + 1}`);
-      
-      const task = await client.tasks.retrieve(imageToVideo.id);
-      console.log('Task status:', task.status);
-
-      switch (task.status) {
-        case 'SUCCEEDED':
-          taskComplete = true;
-          result = {
-            status: 'SUCCEEDED',
-            videoUrl: task.output ? task.output[0] : null,
-            progress: 100,
-            logs: ['Video generation completed successfully!'],
-            taskId: imageToVideo.id
-          };
-          break;
-
-        case 'FAILED':
-          taskComplete = true;
-          result = {
-            status: 'FAILED',
-            error: task.failure || 'Video generation failed',
-            logs: ['Video generation failed', task.failure || ''],
-            taskId: imageToVideo.id
-          };
-          break;
-
-        case 'RUNNING':
-          const progress = task.progress ? Math.round(task.progress * 100) : Math.min(5 * attempts, 95);
-          result = {
-            status: 'PROCESSING',
-            progress,
-            logs: [`Processing: ${progress}% complete`],
-            taskId: imageToVideo.id
-          };
-          break;
-
-        default:
-          console.log('Status:', task.status);
-          result = {
-            status: task.status,
-            progress: 0,
-            logs: [`Status: ${task.status}`],
-            taskId: imageToVideo.id
-          };
-          break;
-      }
-
-      if (taskComplete) {
-        console.log('Task completed with result:', result);
-        break;
-      }
-
-      attempts++;
-      await new Promise(resolve => setTimeout(resolve, 10000)); // 10 seconds between polls as per docs
-    }
-
-    if (!taskComplete) {
-      console.log('Generation timed out');
-      return NextResponse.json({
-        status: 'FAILED',
-        error: 'Generation timeout',
-        logs: ['Video generation timed out after 2 minutes'],
-        taskId: imageToVideo.id
-      }, { status: 408 });
-    }
-
-    console.log('Returning final result:', result);
-    return NextResponse.json(result);
+    
+    // Zamiast czekać na zakończenie zadania, natychmiast zwróć ID zadania
+    // Klient będzie odpytywał endpoint /api/task-status/[id] aby sprawdzić status
+    return NextResponse.json({
+      status: 'PENDING',
+      taskId: imageToVideo.id,
+      progress: 0,
+      logs: ['Task initiated successfully, check status using the taskId']
+    });
 
   } catch (error) {
     console.error('Error generating video:', error);

@@ -1,0 +1,10 @@
+{
+  "functions": {
+    "app/api/generate-video/route.ts": {
+      "maxDuration": 10
+    },
+    "app/api/task-status/[id]/route.ts": {
+      "maxDuration": 10
+    }
+  }
+} 
