@@ -1,0 +1,22 @@
+{
+  "accountAssociation": {
+    "header": "eyJmaWQiOjM0MDY3OCwidHlwZSI6ImN1c3RvZHkiLCJrZXkiOiIweEYxNDU5ZEIwOTI2OTg5RThkRjQyYkQ0MWQ3N0Q4MzIxMzRGYzc4Q2UifQ",
+    "payload": "eyJkb21haW4iOiJtaW5pLXR2LmFwcCJ9",
+    "signature": "MHhmODFjYzRjMDc5MGZhN2ExMzY4ZTEzNmU2NjBjNDIzZTFiNmE3ZTBkYzMwZWRjZjIyNzA5ZjhlOTkxOGZhYjMxNzM1ZDYwYjY4NzAyYmFkMDc2N2U4MThkNTFkZWNjOGI5NTc0YjJjODIzZDMyOWMxNzEzMDQzNGU4Zjc2NGU2MDFi"
+  },
+  "frame": {
+    "version": "1",
+    "name": "MiniTV",
+    "iconUrl": "https://mini-tv.app/miniicon.png",
+    "homeUrl": "https://mini-tv.app",
+    "imageUrl": "https://mini-tv.app/splash.png",
+    "buttonTitle": "MiniTV : AI Video Creator",
+    "splashImageUrl": "https://mini-tv.app/miniicon.png",
+    "splashBackgroundColor": "#FFFFFF",
+    "subtitle": "Transform images into videos with AI",
+    "description": "MiniTV lets you turn static images into dynamic videos using state-of-the-art AI. Built on Ohara by Story91.base.eth",
+    "primaryCategory": "art-creativity",
+    "tags": ["ai", "video", "image", "creation", "base"],
+    "webhookUrl": "https://mini-tv.app/api/webhook"
+  }
+} 

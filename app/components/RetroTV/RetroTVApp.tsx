@@ -170,8 +170,60 @@ const RetroTVApp: React.FC<RetroTVAppProps> = ({
             <p>Have questions or feedback? Reach out to us!</p>
             <div className={styles.contactInfo}>
               <p style={{fontSize: '1.1em', marginTop: '15px'}}>
-                Built on Base by <a href="https://x.com/Story91_" target="_blank" rel="noopener noreferrer" style={{color: '#fff', textDecoration: 'underline'}}>Story91_</a> with <a href="https://x.com/tryoharaAI" target="_blank" rel="noopener noreferrer" style={{color: '#fff', textDecoration: 'underline'}}>Ohara</a>
+                Built on <a href="https://ohara.ai/" target="_blank" rel="noopener noreferrer" style={{color: '#fff', textDecoration: 'underline'}}>Ohara</a> by <a href="https://x.com/Story91_" target="_blank" rel="noopener noreferrer" style={{color: '#fff', textDecoration: 'underline'}}>Story91.base.eth</a>
               </p>
+              
+              <div style={{
+                display: 'flex',
+                justifyContent: 'center',
+                gap: '20px',
+                marginTop: '15px'
+              }}>
+                <a 
+                  href="https://warpcast.com/~/channel/ohara" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    padding: '8px 16px',
+                    backgroundColor: 'rgba(0, 82, 255, 0.3)',
+                    color: 'white',
+                    borderRadius: '8px',
+                    textDecoration: 'none',
+                    border: '1px solid rgba(255, 255, 255, 0.3)',
+                    fontSize: '14px',
+                    fontWeight: 'bold',
+                    transition: 'all 0.2s ease'
+                  }}
+                  onMouseOver={(e) => e.currentTarget.style.backgroundColor = 'rgba(0, 82, 255, 0.5)'}
+                  onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'rgba(0, 82, 255, 0.3)'}
+                >
+                  @ohara-ai Channel
+                </a>
+                <a 
+                  href="https://warpcast.com/baseking" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    padding: '8px 16px',
+                    backgroundColor: 'rgba(0, 82, 255, 0.3)',
+                    color: 'white',
+                    borderRadius: '8px',
+                    textDecoration: 'none',
+                    border: '1px solid rgba(255, 255, 255, 0.3)',
+                    fontSize: '14px',
+                    fontWeight: 'bold',
+                    transition: 'all 0.2s ease'
+                  }}
+                  onMouseOver={(e) => e.currentTarget.style.backgroundColor = 'rgba(0, 82, 255, 0.5)'}
+                  onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'rgba(0, 82, 255, 0.3)'}
+                >
+                  @baseking
+                </a>
+              </div>
               
               <div style={{
                 marginTop: '30px',

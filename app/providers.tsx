@@ -3,6 +3,30 @@
 import { base } from 'wagmi/chains';
 import { OnchainKitProvider } from '@coinbase/onchainkit';
 import type { ReactNode } from 'react';
+import { useEffect } from 'react';
+import { sdk } from '@farcaster/frame-sdk';
+
+// Komponent inicjalizujący Farcaster Frame SDK
+function FarcasterFrameInitializer() {
+  useEffect(() => {
+    const initFrameSDK = async () => {
+      try {
+        // Wywołanie metody ready kiedy interfejs jest gotowy
+        // Ukrywa ekran ładowania w aplikacji Farcaster
+        await sdk.actions.ready({
+          disableNativeGestures: false // Ustaw na true jeśli aplikacja ma konflikty z gestami
+        });
+        console.log('Farcaster Frame SDK initialized');
+      } catch (error) {
+        console.error('Failed to initialize Farcaster Frame SDK:', error);
+      }
+    };
+
+    initFrameSDK();
+  }, []);
+
+  return null;
+}
 
 export function Providers(props: { children: ReactNode }) {
   return (
@@ -13,11 +37,12 @@ export function Providers(props: { children: ReactNode }) {
       config={{ 
         appearance: { 
           mode: 'auto',
-          name: 'MagicVid',
-          logo: '/logo.png'
+          name: 'MiniTV',
+          logo: '/miniicon.png'
         }
       }}
     >
+      <FarcasterFrameInitializer />
       {props.children}
     </OnchainKitProvider>
   );

@@ -897,8 +897,8 @@ export const TVVideoComponent: React.FC<{
   // Przykładowe wywołanie transakcji zgodne z dokumentacją
   const calls = [
     {
-      to: '0xeF692a11A123295CF1F9789eee87Ff70eB04e364' as `0x${string}`, // Adres portfela użytkownika
-      value: BigInt(10000000000000), // 0.00001 ETH
+      to: '0xF1fa20027b6202bc18e4454149C85CB01dC91Dfd' as `0x${string}`, // Adres portfela odbiorcy
+      value: BigInt(100000000000000), // 0.0001 ETH
       data: '0x' as `0x${string}`
     }
   ];
