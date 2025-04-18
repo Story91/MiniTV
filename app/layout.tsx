@@ -21,7 +21,7 @@ const frameMetadata = {
       type: "launch_frame",
       url: process.env.NEXT_PUBLIC_BASE_URL || "https://mini-tv.app",
       name: process.env.NEXT_PUBLIC_FARCASTER_APP_NAME || "MiniTV",
-      splashImageUrl: process.env.NEXT_PUBLIC_FARCASTER_SPLASH_IMAGE || "/miniicon.png",
+      splashImageUrl: process.env.NEXT_PUBLIC_FARCASTER_SPLASH_IMAGE || "https://mini-tv.app/miniicon.png",
       splashBackgroundColor: process.env.NEXT_PUBLIC_FARCASTER_SPLASH_BG_COLOR || "#FFFFFF"
     }
   }
