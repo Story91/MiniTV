@@ -11,30 +11,35 @@ export const viewport: Viewport = {
   userScalable: false,
 };
 
-// Konfiguracja dla Farcaster Frames
-const frameMetadata = {
-  version: "next",
-  imageUrl: `${process.env.NEXT_PUBLIC_BASE_URL}/splash.png`, 
-  button: {
-    title: "MiniTV : AI Video Creator",
-    action: {
-      type: "launch_frame",
-      url: process.env.NEXT_PUBLIC_BASE_URL || "https://mini-tv.app",
-      name: process.env.NEXT_PUBLIC_FARCASTER_APP_NAME || "MiniTV",
-      splashImageUrl: process.env.NEXT_PUBLIC_FARCASTER_SPLASH_IMAGE || "https://mini-tv.app/miniicon.png",
-      splashBackgroundColor: process.env.NEXT_PUBLIC_FARCASTER_SPLASH_BG_COLOR || "#FFFFFF"
-    }
-  }
-};
-
-export const metadata: Metadata = {
-  title: process.env.NEXT_PUBLIC_ONCHAINKIT_PROJECT_NAME || "MiniTV",
-  description: 'Transform images into amazing videos using AI',
-  other: {
-    // Dodajemy meta tag dla Farcaster Frames
-    'fc:frame': JSON.stringify(frameMetadata),
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const URL = process.env.NEXT_PUBLIC_URL || "https://mini-tv.app";
+  const splashImageUrl = process.env.NEXT_PUBLIC_SPLASH_IMAGE_URL || "https://mini-tv.app/miniicon.png";
+  const appName = process.env.NEXT_PUBLIC_ONCHAINKIT_PROJECT_NAME || "MiniTV";
+  const bgColor = process.env.NEXT_PUBLIC_SPLASH_BACKGROUND_COLOR || "FFFFFF";
+  const imageUrl = process.env.NEXT_PUBLIC_IMAGE_URL || "https://mini-tv.app/splash.png";
+  const buttonTitle = process.env.NEXT_PUBLIC_BUTTON_TITLE || "MiniTV : AI Video Creator";
+  
+  return {
+    title: appName,
+    description: 'Transform images into amazing videos using AI',
+    other: {
+      "fc:frame": JSON.stringify({
+        version: process.env.NEXT_PUBLIC_VERSION || "next",
+        imageUrl: imageUrl,
+        button: {
+          title: buttonTitle,
+          action: {
+            type: "launch_frame",
+            name: appName,
+            url: URL,
+            splashImageUrl: splashImageUrl,
+            splashBackgroundColor: `#${bgColor}`,
+          },
+        },
+      }),
+    },
+  };
+}
 
 export default function RootLayout({
   children,

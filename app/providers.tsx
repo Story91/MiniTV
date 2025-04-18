@@ -11,11 +11,12 @@ import { FarcasterFrameProvider } from './components/FarcasterFrameProvider/Farc
 
 // Pobranie zmiennych środowiskowych z fallbackami
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://mini-tv.app';
-const SPLASH_IMAGE = process.env.NEXT_PUBLIC_FARCASTER_SPLASH_IMAGE || 'https://mini-tv.app/miniicon.png';
+const SPLASH_IMAGE = process.env.NEXT_PUBLIC_SPLASH_IMAGE_URL || 'https://mini-tv.app/miniicon.png';
 const APP_NAME = process.env.NEXT_PUBLIC_ONCHAINKIT_PROJECT_NAME || 'MiniTV';
 const WC_PROJECT_ID = process.env.NEXT_PUBLIC_WC_PROJECT_ID || '';
 const ONCHAIN_API_KEY = process.env.NEXT_PUBLIC_ONCHAINKIT_API_KEY || '';
 const ONCHAIN_APP_ID = process.env.NEXT_PUBLIC_ONCHAINKIT_APP_ID || '';
+const ICON_URL = process.env.NEXT_PUBLIC_ICON_URL || 'https://mini-tv.app/miniicon.png';
 
 // Konfiguracja wagmi dla obsługi portfela
 const wagmiConfig = createConfig({
@@ -58,8 +59,9 @@ export function Providers(props: { children: ReactNode }) {
             config={{ 
               appearance: { 
                 mode: 'auto',
+                theme: 'base',
                 name: APP_NAME,
-                logo: SPLASH_IMAGE
+                logo: ICON_URL
               },
               wallet: {
                 display: 'modal',
