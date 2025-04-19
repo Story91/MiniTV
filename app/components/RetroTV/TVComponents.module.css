@@ -247,6 +247,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  position: relative;
 }
 
 .tvVideo {
@@ -258,6 +259,67 @@
 
 .videoControls {
   margin-top: 20px;
+  width: 100%;
+  max-width: 500px;
+}
+
+/* Nowe style dla nakładki wideo */
+.videoOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 5;
+  background-color: rgba(0, 0, 0, 0.05);
+  pointer-events: all;
+}
+
+.unlockPrompt {
+  background-color: rgba(0, 0, 0, 0.6);
+  padding: 4px 8px;
+  border-radius: 4px;
+  text-align: center;
+  color: white;
+  max-width: 85%;
+}
+
+.unlockButton {
+  background-color: rgba(0, 255, 0, 0.4);
+  border: none;
+  padding: 10px 15px;
+  margin: 10px 0;
+  border-radius: 5px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.unlockButton:hover {
+  background-color: rgba(0, 255, 0, 0.6);
+}
+
+/* Efekt świecenia dla odblokowanego wideo */
+.unlockedGlow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, rgba(0, 255, 0, 0.1) 0%, rgba(0, 0, 0, 0) 70%);
+  pointer-events: none;
+  z-index: 5;
+}
+
+/* Ikona kłódki */
+.lockIcon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
 /* Media queries for better mobile responsiveness */
@@ -508,4 +570,30 @@
   50% {
     transform: translateX(10px);
   }
+}
+
+.transactionButtonContainer {
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+/* Styl dla przycisku transakcji */
+.transactionButton {
+  background-color: rgba(180, 50, 80, 0.8) !important;
+  width: 100% !important;
+  padding: 10px 15px !important;
+  font-size: 1rem !important;
+  margin-bottom: 10px !important;
+  border: none !important;
+  border-radius: 5px !important;
+  cursor: pointer !important;
+  font-weight: bold !important;
+  text-transform: uppercase !important;
+  letter-spacing: 2px !important;
+  text-align: center !important;
+  display: block !important;
+  color: white !important;
+  font-family: 'Courier New', monospace !important;
+  position: relative !important;
+  overflow: hidden !important;
 } 

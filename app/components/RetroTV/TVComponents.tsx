@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useAccount } from 'wagmi';
 import { base } from 'wagmi/chains';
 import styles from './TVComponents.module.css';
@@ -620,62 +620,15 @@ export const TVGenerateComponent: React.FC<{
 }) => {
   const isMobile = useIsMobile();
   
-  // Nowy stan do śledzenia statusu zadania
-  const [pollingInterval, setPollingInterval] = useState<NodeJS.Timeout | null>(null);
-  
   // Funkcja obsługująca inicjowanie generowania wideo asynchronicznie
-  const handleStartVideoGeneration = async () => {
+  const handleStartVideoGeneration = () => {
     try {
       // Wywołaj pierwotną funkcję dostarczoną przez props
       handleGenerateVideo();
-      
-      // Zatrzymaj poprzednie intervalsy jeśli istnieją
-      if (pollingInterval) {
-        clearInterval(pollingInterval);
-      }
     } catch (error) {
       console.error('Error starting video generation:', error);
     }
   };
-  
-  // Efekt do obsługi odpytywania statusu zadania
-  useEffect(() => {
-    // Jeśli mamy taskId i trwa generowanie, ustaw interval do odpytywania statusu
-    if (taskId && isGeneratingVideo) {
-      const interval = setInterval(async () => {
-        try {
-          const response = await fetch(`/api/task-status/${taskId}`);
-          const data = await response.json();
-          
-          // Tutaj możemy aktualizować dane w komponencie nadrzędnym
-          // Uwaga: Komponenty nadrzędne powinny dostarczyć funkcje do aktualizacji stanu
-          
-          // Zakończ odpytywanie, gdy zadanie jest zakończone
-          if (data.status === 'SUCCEEDED' || data.status === 'FAILED') {
-            if (pollingInterval) {
-              clearInterval(pollingInterval);
-              setPollingInterval(null);
-            }
-          }
-        } catch (error) {
-          console.error('Error fetching task status:', error);
-        }
-      }, 5000); // Odpytuj co 5 sekund
-      
-      setPollingInterval(interval);
-      
-      // Zatrzymaj interval przy odmontowaniu lub zmianie taskId
-      return () => {
-        clearInterval(interval);
-      };
-    }
-    
-    // Zatrzymaj odpytywanie, gdy generowanie jest zatrzymane
-    if (!isGeneratingVideo && pollingInterval) {
-      clearInterval(pollingInterval);
-      setPollingInterval(null);
-    }
-  }, [taskId, isGeneratingVideo, pollingInterval]);
   
   if (!imgbbResponse || !imgbbResponse.success) {
     return (
@@ -839,9 +792,20 @@ export const TVVideoComponent: React.FC<{
   const [hackUnlocked, setHackUnlocked] = useState(false);
   const [secretCodeInput, setSecretCodeInput] = useState<number[]>([]);
   const [hackMessage, setHackMessage] = useState("🔓 Hack successful! Now you are BASED!");
+  const [isPlaying, setIsPlaying] = useState(true);
+  const videoRef = useRef<HTMLVideoElement>(null);
   
   // Tajny kod do odblokowania funkcji pobierania bez transakcji
   const correctHackCode = [8, 4, 5, 3];
+  
+  // Auto play video when component mounts
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.play().catch(err => {
+        console.error("Failed to autoplay video:", err);
+      });
+    }
+  }, [videoUrl]);
   
   // Funkcja sprawdzająca kod hackerski
   const checkHackCode = (newCode: number[]) => {
@@ -930,20 +894,45 @@ export const TVVideoComponent: React.FC<{
 
   // Sprawdź czy wideo jest odblokowane przez transakcję lub kod hackerski
   const isVideoUnlocked = transactionSuccessful || hackUnlocked;
+  
+  // Funkcja do pauzowania/odtwarzania wideo
+  const togglePlay = () => {
+    if (videoRef.current) {
+      if (videoRef.current.paused) {
+        videoRef.current.play();
+        setIsPlaying(true);
+      } else {
+        videoRef.current.pause();
+        setIsPlaying(false);
+      }
+    }
+  };
 
   return (
     <div className={styles.tvComponentContainer}>
       <h2 className={styles.tvSectionTitle}>WATCH VIDEO</h2>
-      <div className={styles.videoContainer}>
+      <div className={styles.videoContainer} style={{ position: 'relative' }}>
+        {/* Video element - odtwarzanie automatyczne, z kontrolkami */}
         <video
-          controls
+          ref={videoRef}
           className={styles.tvVideo}
           src={videoUrl}
-        >
-          Your browser does not support the video tag.
-        </video>
-
-        <div className={styles.videoControls}>
+          autoPlay
+          loop={!isVideoUnlocked} // Pętla tylko dopóki film nie jest odblokowany
+          playsInline
+          muted={false}
+          controls={isVideoUnlocked} // Pokazujemy kontrolki tylko po odblokowaniu
+          style={{ 
+            width: '100%', 
+            maxWidth: '500px', 
+            borderRadius: '5px',
+            border: isVideoUnlocked ? '2px solid rgba(0, 255, 0, 0.5)' : '2px solid rgba(255, 255, 255, 0.3)'
+          }}
+        />
+        
+        {/* Kontrolki wideo - wyświetlane zawsze, ale działają tylko po odblokowaniu */}
+        <div className={styles.videoControls} style={{ marginTop: '15px' }}>
+          {/* Przycisk pobierania - zawsze widoczny, ale aktywny tylko po odblokowaniu */}
           <button
             onClick={handleDownload}
             className={styles.tvButton}
@@ -954,88 +943,30 @@ export const TVVideoComponent: React.FC<{
               width: '100%',
               padding: '10px 15px',
               fontSize: '1rem',
-              marginBottom: '10px'
+              marginBottom: '10px',
+              position: 'relative',
+              overflow: 'hidden',
+              transition: 'all 0.3s'
             }}
           >
             DOWNLOAD VIDEO
+            {!isVideoUnlocked && (
+              <span className={styles.lockIcon}>
+                🔒
+              </span>
+            )}
           </button>
           
-          {isConnected && !isVideoUnlocked && (
-            <div style={{ marginTop: '20px', width: '100%' }}>
-              {/* Implementacja zgodna z dokumentacją */}
-              <Transaction
-                chainId={base.id}
-                calls={calls}
-                onStatus={handleOnStatus}
-              >
-                <div className={styles.transactionButtonContainer} style={{ width: '100%' }}>
-                  <TransactionButton />
-                </div>
-                <TransactionSponsor />
-                <TransactionStatus>
-                  <TransactionStatusLabel />
-                  <TransactionStatusAction />
-                </TransactionStatus>
-                <TransactionToast>
-                  <TransactionToastIcon />
-                  <TransactionToastLabel />
-                  <TransactionToastAction />
-                </TransactionToast>
-              </Transaction>
-              
-              <div style={{ 
-                padding: '10px', 
-                backgroundColor: 'rgba(0,0,0,0.2)', 
-                borderRadius: '5px', 
-                marginTop: '10px'
-              }}>
-                <p className={styles.tvInfo} style={{ 
-                  color: '#ffcc00', 
-                  textAlign: 'center', 
-                  fontSize: '0.9rem',
-                  margin: 0
-                }}>
-                  Complete transaction to unlock download, or use secret code from the TV remote!
-                </p>
-                {secretCodeInput.length > 0 && (
-                  <p style={{ 
-                    color: '#ff6666', 
-                    textAlign: 'center', 
-                    fontSize: '0.8rem',
-                    margin: '5px 0 0 0'
-                  }}>
-                    Code: {secretCodeInput.join('')} {secretCodeInput.length === 4 ? (hackUnlocked ? '✓' : '✗') : ''}
-                  </p>
-                )}
-              </div>
-            </div>
-          )}
-          
-          {!isConnected && !isVideoUnlocked && (
-            <div style={{ marginTop: '10px' }}>
-              <p className={styles.tvInfo} style={{ color: '#ffcc00' }}>
-                Connect your wallet and complete transaction to download this video, or use secret code from the TV remote!
-              </p>
-              {secretCodeInput.length > 0 && (
-                <p style={{ 
-                  color: '#ff6666', 
-                  textAlign: 'center', 
-                  fontSize: '0.8rem',
-                  margin: '5px 0 0 0'
-                }}>
-                  Code: {secretCodeInput.join('')} {secretCodeInput.length === 4 ? (hackUnlocked ? '✓' : '✗') : ''}
-                </p>
-              )}
-            </div>
-          )}
-          
-          {isVideoUnlocked && (
-            <div style={{ 
-              padding: '10px', 
-              backgroundColor: 'rgba(0,0,0,0.2)', 
-              borderRadius: '5px', 
-              marginTop: '10px'
-            }}>
+          {/* Sekcja informacyjna - połączona */}
+          <div style={{ 
+            padding: '10px', 
+            backgroundColor: 'rgba(0, 0, 0, 0.2)', 
+            borderRadius: '5px', 
+            marginTop: '10px',
+            position: 'relative',
+            overflow: 'hidden'
+          }}>
+            {isVideoUnlocked ? (
               <p className={styles.tvInfo} style={{ 
                 color: '#66ff66', 
                 textAlign: 'center', 
@@ -1043,9 +974,68 @@ export const TVVideoComponent: React.FC<{
                 margin: 0
               }}>
                 {hackUnlocked ? hackMessage : 'Transaction successful! Download is now available.'}
+                <br />
+                <small style={{ fontSize: '0.8rem', opacity: 0.8 }}>
+                  Use video player controls or the button above to download
+                </small>
               </p>
-            </div>
-          )}
+            ) : isConnected ? (
+              <>
+                {/* Implementacja zgodna z dokumentacją */}
+                <Transaction
+                  chainId={base.id}
+                  calls={calls}
+                  onStatus={handleOnStatus}
+                >
+                  <div className={styles.transactionButtonContainer}>
+                    <TransactionButton className={styles.transactionButton} />
+                  </div>
+                  <TransactionSponsor />
+                  <TransactionStatus>
+                    <TransactionStatusLabel />
+                    <TransactionStatusAction />
+                  </TransactionStatus>
+                  <TransactionToast>
+                    <TransactionToastIcon />
+                    <TransactionToastLabel />
+                    <TransactionToastAction />
+                  </TransactionToast>
+                </Transaction>
+                
+                <p className={styles.tvInfo} style={{ 
+                  color: '#ffcc00', 
+                  textAlign: 'center', 
+                  fontSize: '0.9rem',
+                  margin: '10px 0 0 0',
+                  fontStyle: 'italic',
+                  opacity: 0.8
+                }}>
+                  Complete transaction to unlock download, or use secret code from the TV remote!
+                </p>
+              </>
+            ) : (
+              <p className={styles.tvInfo} style={{ color: '#ffcc00' }}>
+                Connect your wallet and complete transaction to download this video, or use secret code from the TV remote!
+              </p>
+            )}
+            
+            {/* Wyświetlanie wprowadzanego kodu */}
+            {secretCodeInput.length > 0 && !isVideoUnlocked && (
+              <p style={{ 
+                color: '#ff6666', 
+                textAlign: 'center', 
+                fontSize: '0.8rem',
+                margin: '5px 0 0 0'
+              }}>
+                Code: {secretCodeInput.join('')} {secretCodeInput.length === 4 ? (hackUnlocked ? '✓' : '✗') : ''}
+              </p>
+            )}
+            
+            {/* Efekt świecenia dla odblokowanej sekcji */}
+            {isVideoUnlocked && (
+              <div className={styles.unlockedGlow}></div>
+            )}
+          </div>
         </div>
       </div>
     </div>
